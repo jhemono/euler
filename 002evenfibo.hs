@@ -1,5 +1,3 @@
-module EvenFibonacci where
-
 fibonacciList :: [Integer]
 fibonacciList = 1 : 1 : zipWith (+) fibonacciList (tail fibonacciList)
 

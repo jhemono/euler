@@ -1,6 +1,7 @@
 module Main where
 import Data.Word
 import Data.List
+
 triangularNumbers :: [Integer]
 triangularNumbers = scanl1 (+) [1..]
 

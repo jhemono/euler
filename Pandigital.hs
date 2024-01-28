@@ -13,16 +13,16 @@ type Pandigital = [Int]
 
 succdigital' :: Set -> Pandigital -> Maybe (Set,Pandigital,Int)
 succdigital' ads [] = firstpandigital ads
-succdigital' ads (d:ds) = first `mplus` second
-  where first = do
-          let ads' = ads \\ ds
-          d' <- find (> d) ads'
-          let delta = d' - d
-          return (delete d' ads', d':ds,delta)
-        second = do
-          (ads' @ (d':_),ds',delta) <- succdigital' ads ds
-          let delta' = (delta * 10) - (d - d')
-          return (delete d' ads', d':ds', delta')
+succdigital' ads (d:ds) = first `mplus` second where
+  first = do
+    let ads' = ads \\ ds
+    d' <- find (> d) ads'
+    let delta = d' - d
+    return (delete d' ads', d':ds,delta)
+  second = do
+    ((d':ads'),ds',delta) <- succdigital' ads ds
+    let delta' = (delta * 10) - (d - d')
+    return (ads', d':ds', delta')
 
 firstpandigital :: (MonadPlus m) => Set -> m (Set, Pandigital, Int)
 firstpandigital [] = mzero
@@ -46,12 +46,11 @@ toint :: Pandigital -> Int
 toint p = sum $ zipWith (\d i -> d * (10 ^ i)) p ([0..] :: [Int])
 
 range' :: Set -> Pandigital -> [(Pandigital,Int)]
-range' s pd0 = (pd0,n0) : unfoldr wrap (pd0,n0)
-  where
-    n0 = toint pd0
-    wrap (pd,n) =
-      do (pd',n') <- succdigital s (pd,n)
-         return ((pd',n'),(pd',n'))
+range' s pd0 = (pd0,n0) : unfoldr wrap (pd0,n0) where
+  n0 = toint pd0
+  wrap (pd,n) = do
+    (pd',n') <- succdigital s (pd,n)
+    return ((pd',n'),(pd',n'))
 
 range :: Set -> Pandigital -> [Int]
 range s pd0 = fmap snd (range' s pd0)

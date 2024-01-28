@@ -8,6 +8,7 @@ primes :: [Int]
 primes = 2 : 3 : 5 : filter isPrime [7,9..]
 
 isPrime :: Int -> Bool
+isPrime 1 = False
 isPrime n = not . any (\d -> n `mod` d == 0) . takeWhile (<= root n) $ primes
 
 primeDivisors :: Int -> [Int]

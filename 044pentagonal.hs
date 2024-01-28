@@ -1,8 +1,6 @@
 import Data.Maybe
 import Control.Monad
 
-triangulars :: [Int]
-triangulars = scanl1 (+) [1..]
 pentagonals :: [Int]
 pentagonals = fmap pentagonal [1..]
 pentagonal :: Int -> Int
